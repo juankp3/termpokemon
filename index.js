@@ -1,12 +1,12 @@
 const program = require("commander");
 const { prompt } = require("inquirer");
-const { listPokemons } = require("./api");
+const { listPokemons, getAbilities } = require("./api");
 
 program.version("0.0.1").description("CLI program");
 program
 .command("list")
 .alias("l")
-.description("list all students")
+.description("list all Pokemons")
 .action(() => {
     const lpokemons = listPokemons();
     lpokemons.then( pokemons => {
@@ -14,12 +14,19 @@ program
             {
             type: "list",
             name: "selected",
-            message: "Select a student",
+            message: "Select a Pokemon",
             choices: Object.keys(pokemons),
             },
         ]).then(({ selected }) => {
             const pokemon = pokemons[selected];
-            console.log(pokemon, 'pokemon ==> ')
+            console.log('Abilities:')
+            getAbilities(pokemon.name).then(abilities => {
+                console.log(abilities)
+            })
+
+
+
+            // console.log(pokemon.name, 'pokemon ==> ')
             // console.log(JSON.stringify(pokemon, null, 2));
         });
         }
